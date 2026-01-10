@@ -131,8 +131,8 @@ async def chat_completions(request: ChatRequest):
                 "reason": "User-specified model"
             }
         
-        # Get API key from environment
-        openai_key = os.getenv("OPENAI_API_KEY")
+        # Get API key from environment and clean it
+        openai_key = os.getenv("OPENAI_API_KEY", "").strip()
         if not openai_key or openai_key == "sk-proj-your-openai-key-here":
             raise HTTPException(
                 status_code=500, 
