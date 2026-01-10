@@ -4,6 +4,19 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen.svg)](https://web-production-a7f5f.up.railway.app)
+
+## 🌐 Live Demo
+
+**Try it now:** [https://web-production-a7f5f.up.railway.app](https://web-production-a7f5f.up.railway.app)
+
+```bash
+# Test the live API
+curl https://web-production-a7f5f.up.railway.app/health
+
+# View statistics
+curl https://web-production-a7f5f.up.railway.app/stats
+```
 
 ## ⚡ Quick Start
 
