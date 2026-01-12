@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  # PostgreSQL database
+  db:
+    image: postgres:15-alpine
+    container_name: ai-router-db
+    environment:
+      POSTGRES_USER: aiRouter
+      POSTGRES_PASSWORD: dev_password_change_in_prod
+      POSTGRES_DB: ai_router
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aiRouter"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # AI Router application
+  app:
+    build: .
+    container_name: ai-router-app
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DATABASE_URL=postgresql://aiRouter:dev_password_change_in_prod@db:5432/ai_router
+      - PORT=8000
+      - ENVIRONMENT=development
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+volumes:
+  postgres_data:
