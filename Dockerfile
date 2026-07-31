@@ -1,4 +1,4 @@
-# Multi-stage build for smaller image size
+# Build stage for smaller image size
 FROM python:3.11-slim as builder
 
 # Set working directory
@@ -33,12 +33,12 @@ RUN chmod +x /app/*.py
 # Update PATH
 ENV PATH=/root/.local/bin:$PATH
 
-# Expose port
+# Expose port (Note: This is just documentation for Docker, Railway overrides this)
 EXPOSE 8000
 
-# Health check
+# Health check - FIXED to use dynamic $PORT variable
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD python -c "import httpx; httpx.get('http://localhost:8000/health', timeout=2)"
+    CMD python -c "import os, httpx; httpx.get(f'http://localhost:{os.environ.get(\"PORT\", 8000)}/health', timeout=2)"
 
-# Run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run the application - FIXED to use dynamic $PORT variable with a fallback to 8000 locally
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
