@@ -7,9 +7,11 @@ Intelligent query routing system for AI language models with automatic cost opti
 
 ## Overview
 
-AI Router analyzes incoming queries and routes them to the most cost-effective AI model capable of handling the request. By intelligently selecting between GPT-4o, GPT-3.5-turbo, and GPT-4o-mini based on query complexity, the system achieves significant cost savings while maintaining response quality.
+AI Router analyzes incoming queries and routes them to the most cost-effective AI model capable of handling the request. By intelligently selecting between GPT-4o, GPT-3.5-turbo, and GPT-4o-mini based on query complexity, the system is designed to cut API costs while maintaining response quality.
 
 Live instance: https://web-production-a7f5f.up.railway.app
+
+> **Status note:** The routing/complexity-analysis pipeline is fully deployed and live. Live OpenAI completions currently require an active API key with credits on the hosted instance — the routing logic itself runs regardless of key status.
 
 ## Key Features
 
@@ -26,7 +28,7 @@ Live instance: https://web-production-a7f5f.up.railway.app
 The system implements a three-stage processing pipeline:
 
 1. **Query Analysis**: Evaluates incoming requests across six dimensions including vocabulary sophistication, code presence, technical depth, and structural complexity
-2. **Model Selection**: Routes queries to appropriate models using weighted scoring algorithm
+2. **Model Selection**: Routes queries to appropriate models using a weighted scoring algorithm
 3. **Request Forwarding**: Proxies requests to OpenAI API using user-provided credentials
 
 ## Installation
@@ -132,15 +134,15 @@ Health check endpoint for monitoring and load balancers.
 
 ## Cost Analysis
 
-Based on production usage patterns with 1M tokens monthly:
+**Projected** savings based on OpenAI's published per-token pricing across complexity tiers — this is a calculated estimate, not measured production traffic (this is a personal/portfolio project, not a deployed production system with real user load):
 
-| Scenario | Monthly Cost | Savings |
+| Scenario | Monthly Cost (1M tokens, illustrative) | Savings |
 |----------|--------------|---------|
 | All requests to GPT-4o | $15,000 | Baseline |
 | Manual model selection | $8,000 | 47% |
 | Automated routing (this system) | $3,000 | 80% |
 
-Actual savings depend on query distribution and complexity patterns.
+Actual savings depend on real query distribution and complexity patterns, and would need to be validated against live traffic to confirm.
 
 ## Deployment
 
@@ -218,6 +220,7 @@ ai-router/
 - In-memory request logging (consider database for production)
 - No built-in authentication (add reverse proxy or API gateway)
 - Rate limiting not implemented (use infrastructure-level controls)
+- Cost figures above are projections based on published pricing, not measured production data
 
 ## Roadmap
 
